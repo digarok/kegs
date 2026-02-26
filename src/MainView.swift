@@ -387,7 +387,7 @@ class MainView: NSView {
 		}
 		// Otherwise, update rawData in our Bitmap now
 		rect = Change_rect(x:0, y:0, width:0, height:0)
-		for i in 0...MAX_CHANGE_RECTS {		// MAX_CHANGE_RECTS
+		for i in 0..<MAX_CHANGE_RECTS {		// MAX_CHANGE_RECTS
 			valid = video_out_data(rawData, kimage_ptr,
 				Int32(pixels_per_line), &rect, Int32(i))
 			if(valid == 0) {

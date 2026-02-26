@@ -212,7 +212,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 								-> NSSize {
 		// print("WILL RESIZE app \(frameSize)")
 		let width = Int(frameSize.width)
-		let height = Int(frameSize.width)
+		let height = Int(frameSize.height)
 		let win_info = find_win_info(window)
 		win_info.update_window_size(width: width, height: height)
 		return frameSize
