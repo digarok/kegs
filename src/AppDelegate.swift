@@ -58,7 +58,7 @@ class Window_info {
 		view.kimage_ptr = kimage_ptr;
 		print("About to call initialize");
 		view.initialize()
-		view.closed = false 
+		view.closed = false
 
 		window.delegate = app_delegate
 		window.contentView = view
@@ -144,7 +144,6 @@ class Window_info {
 	}
 }
 
-@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
 	var mainwin_info = Window_info();
@@ -169,6 +168,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 		// This is your first real entry point into the app
 		print("start!")
 		set_menu_for_kegs()
+		NSApp.activate(ignoringOtherApps: true)  // Bring window to front
 		main_init()
 	}
 
@@ -234,53 +234,53 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
 	func set_menu_for_kegs() {
 		let appname = "Kegs"
-		if let menu = NSApp.mainMenu {
-			show_menu(menu, depth: 0)
-			menu.removeAllItems()
+		let menu = NSMenu(title: "MainMenu")
+		NSApp.mainMenu = menu
 
-			print("Installing my menu now")
-			let kegs = NSMenu(title: appname)
-			kegs.addItem(withTitle: "About \(appname)",
-				action: #selector(AppDelegate.do_about(_:)),
-				keyEquivalent: "")
-			kegs.addItem(NSMenuItem.separator())
-			let quit_item = NSMenuItem(title: "Quit \(appname)",
-				action: #selector(NSApplication.terminate(_:)),
-				keyEquivalent: "q")
-			quit_item.keyEquivalentModifierMask = [.option,
-								.command ]
-			kegs.addItem(quit_item)
-			let kegs_item = NSMenuItem()
-			kegs_item.title = appname
-			kegs_item.submenu = kegs
-			menu.addItem(kegs_item)
+		print("Installing my menu now")
 
-			// First menu of "Kegs" now done.  Add "Edit" menu
-			let edit = NSMenu(title: "Edit")
-			edit.addItem(withTitle: "Copy Text Screen",
-				action: #selector(MainView.do_copy_text(_:)),
-				keyEquivalent: "")
-			edit.addItem(NSMenuItem.separator())
-			edit.addItem(withTitle: "Paste",
-				action: #selector(MainView.do_paste(_:)),
-				keyEquivalent: "")
-			let edit_item = NSMenuItem()
-			edit_item.title = "Edit"
-			edit_item.submenu = edit
-			menu.addItem(edit_item)
+		//   Add "Kegs" menu
+		let kegs = NSMenu(title: appname)
+		kegs.addItem(withTitle: "About \(appname)",
+			action: #selector(AppDelegate.do_about(_:)),
+			keyEquivalent: "")
+		kegs.addItem(NSMenuItem.separator())
+		let quit_item = NSMenuItem(title: "Quit \(appname)",
+			action: #selector(NSApplication.terminate(_:)),
+			keyEquivalent: "q")
+		quit_item.keyEquivalentModifierMask = [.option,
+							.command ]
+		kegs.addItem(quit_item)
+		let kegs_item = NSMenuItem()
+		kegs_item.title = appname
+		kegs_item.submenu = kegs
+		menu.addItem(kegs_item)
 
-			// Edit menu of "Kegs" now done.  Add "Config" menu
-			let config = NSMenu(title: "Config")
-			config.addItem(withTitle: "Configuration  F4",
-				action: #selector(MainView.do_config(_:)),
-				keyEquivalent: "")
-			let config_item = NSMenuItem()
-			config_item.title = "Config"
-			config_item.submenu = config
-			menu.addItem(config_item)
-		
-			show_menu(menu, depth: 0)
-		}
+		//   Add "Edit" menu
+		let edit = NSMenu(title: "Edit")
+		edit.addItem(withTitle: "Copy Text Screen",
+			action: #selector(MainView.do_copy_text(_:)),
+			keyEquivalent: "")
+		edit.addItem(NSMenuItem.separator())
+		edit.addItem(withTitle: "Paste",
+			action: #selector(MainView.do_paste(_:)),
+			keyEquivalent: "")
+		let edit_item = NSMenuItem()
+		edit_item.title = "Edit"
+		edit_item.submenu = edit
+		menu.addItem(edit_item)
+
+		//   Add "Config" menu
+		let config = NSMenu(title: "Config")
+		config.addItem(withTitle: "Configuration  F4",
+			action: #selector(MainView.do_config(_:)),
+			keyEquivalent: "")
+		let config_item = NSMenuItem()
+		config_item.title = "Config"
+		config_item.submenu = config
+		menu.addItem(config_item)
+
+		show_menu(menu, depth: 0)
 	}
 
 	func show_menu(_ menu: NSMenu, depth: Int) {
@@ -304,7 +304,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
 	var mainWindow : NSWindow!
 	var mainwin_view : MainView!
-    
+
 	func main_init() {
 		var kimage_ptr : UnsafeMutablePointer<Kimage>!
 		var rect = NSRect.zero
@@ -338,6 +338,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 							delegate: self)
 
 		mainwin_info.create_window()
+		NSApp.activate(ignoringOtherApps: true)
 		main_run_loop()
 	}
 
