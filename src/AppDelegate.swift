@@ -338,6 +338,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 							delegate: self)
 
 		mainwin_info.create_window()
+		NSApp.activate(ignoringOtherApps: true)
 		main_run_loop()
 	}
 
