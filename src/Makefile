@@ -2,7 +2,7 @@
 
 XOPTS_WIN = -Wall -fomit-frame-pointer -march=pentium
 
-SWIFTOBJS = AppDelegate.o MainView.o
+SWIFTOBJS = AppDelegate.o MainView.o main.o
 
 include vars
 include ldvars
@@ -34,14 +34,12 @@ kegsmac: $(OBJECTS) $(OBJECTS1) compile_time.o $(SWIFTOBJS)
 		-Xlinker -no_deduplicate -fobjc-link-runtime \
 		-L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx \
 		-L/usr/lib/swift
-	mkdir -p ../KEGSMAC.app/Contents/Resources/Base.lproj/
 	mkdir -p ../KEGSMAC.app/Contents/MacOS
 	mkdir -p ../KEGSMAC.app/Contents/Frameworks
 	$(PERL) cp_kegs_libs kegsmac /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx ../KEGSMAC.app/Contents/Frameworks
 	mv kegsmac ../KEGSMAC.app/Contents/MacOS/KEGSMAC
 	echo "APPL????" > ../KEGSMAC.app/Contents/PkgInfo
 	cp -f Info.plist ../KEGSMAC.app/Contents/
-	cp -f $(PROJROOT)/lib/MainMenu.nib ../KEGSMAC.app/Contents/Resources/Base.lproj/
 	$(PROJROOT)/lib/make_mac_icon $(PROJROOT)/lib/kegsicon.png
 	cp -f kegs.icns ../KEGSMAC.app/Contents/Resources/
 	touch '../KEGSMAC.app/Icon?'
@@ -82,11 +80,15 @@ kegswin.exe: $(OBJECTS) $(OBJECTS1) compile_time.o
 
 AppDelegate.o: AppDelegate.swift
 	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
-		MainView.swift -o $*.o
+		MainView.swift main.swift -o $*.o
 
 MainView.o: MainView.swift
 	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
-		AppDelegate.swift -o $*.o
+		AppDelegate.swift main.swift -o $*.o
+
+main.o: main.swift
+	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
+		AppDelegate.swift MainView.swift -o $*.o
 
 win32.o: win32.rc
 	windres -o win32.o win32.rc

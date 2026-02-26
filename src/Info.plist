@@ -46,8 +46,6 @@
 	<string>Copyright © 2025 Kent Dickey. All rights reserved.</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
