@@ -2,7 +2,7 @@
 
 XOPTS_WIN = -Wall -fomit-frame-pointer -march=pentium
 
-SWIFTOBJS = AppDelegate.o MainView.o main.o
+SWIFTOBJS = AppDelegate.o MainView.o
 
 include vars
 include ldvars
@@ -80,15 +80,11 @@ kegswin.exe: $(OBJECTS) $(OBJECTS1) compile_time.o
 
 AppDelegate.o: AppDelegate.swift
 	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
-		MainView.swift main.swift -o $*.o
+		MainView.swift -o $*.o
 
 MainView.o: MainView.swift
 	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
-		AppDelegate.swift main.swift -o $*.o
-
-main.o: main.swift
-	sh ./comp_swift -c $(OPTS) -I. -primary-file $*.swift \
-		AppDelegate.swift MainView.swift -o $*.o
+		AppDelegate.swift -o $*.o
 
 win32.o: win32.rc
 	windres -o win32.o win32.rc

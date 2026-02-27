@@ -144,7 +144,14 @@ class Window_info {
 	}
 }
 
+@main
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+
+	static func main() {
+		let delegate = AppDelegate()
+		NSApplication.shared.delegate = delegate
+		_ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
+	}
 
 	var mainwin_info = Window_info();
 	var debugwin_info = Window_info();
